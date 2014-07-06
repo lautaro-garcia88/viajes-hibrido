@@ -3,7 +3,7 @@ package ar.edu.tadp.viajes.modulo
 import ar.edu.tadp.viajes.Direccion
 
 object CDirs {
-
+  
   def A_000 = Direccion("Calle A", 0, "")
   def A_200 = Direccion("Calle A", 200, "")
   def A_400 = Direccion("Calle A", 400, "")
@@ -21,5 +21,4 @@ object CDirs {
   def C_200 = Direccion("Calle C", 200, "")
   def C_400 = Direccion("Calle C", 400, "")
   def C_700 = Direccion("Calle C", 700, "")
-
 }

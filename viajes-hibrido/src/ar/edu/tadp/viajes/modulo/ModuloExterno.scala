@@ -1,98 +1,105 @@
 package ar.edu.tadp.viajes.modulo
 
-import scala.collection.mutable.HashMap
+import util.control.Breaks._
+
 import ar.edu.tadp.viajes.Direccion
 import ar.edu.tadp.viajes.transporte._
-import util.control.Breaks._
 import ar.edu.tadp.viajes.Direccion
-import ar.edu.tadp.viajes.DireccionTransporte
 import ar.edu.tadp.viajes.Combinacion
 
 object ModuloExterno extends ModuloExternoI {
 
-  implicit def combinaciones = HashMap[Transporte, HashMap[Transporte, Direccion]](
-    Colectivo(25) -> HashMap(
-      Colectivo(107) -> CDirs.A_700,
-      Tren("A") -> CDirs.A_000),
-    Colectivo(107) -> HashMap(
-      Colectivo(135) -> CDirs.B_400,
-      Subte("B") -> CDirs.B_400),
-    Tren("A") -> HashMap(
-      Subte("B") -> CDirs.B_000))
+  override def getTransportesCercanos(direccion: Direccion): Option[List[(Transporte, Direccion)]] = direccion match {
+    case Direccion("Calle A", altura, _) =>
+      if (altura >= 0 && altura < 100) Some(List(
+        (Tren("A"), CDirs.A_000),
+        (Colectivo(25), CDirs.A_000)))
+      else if (altura >= 100 && altura < 300) Some(List(
+        (Colectivo(25), CDirs.A_200)))
+      else if (altura >= 300 && altura < 500) None
+      else if (altura >= 500 && altura < 1000) Some(List(
+        (Colectivo(25), CDirs.A_700),
+        (Colectivo(107), CDirs.A_700)))
+      else None
 
-  override def getTransportesCercanos(direccion: Direccion): Array[DireccionTransporte] = {
+    case Direccion("Calle B", altura, _) =>
+      if (altura >= 0 && altura < 100) Some(List(
+        (Tren("A"), CDirs.A_000),
+        (Subte("B"), CDirs.A_000)))
+      else if (altura >= 100 && altura < 300) None
+      else if (altura >= 300 && altura < 500) Some(List(
+        (Colectivo(135), CDirs.A_400),
+        (Colectivo(107), CDirs.A_400),
+        (Subte("B"), CDirs.A_400)))
+      else if (altura >= 500 && altura < 1000) None
+      else None
 
-    direccion.calle match {
-      case "Calle A" => {
-        if (direccion.numero >= 0 && direccion.numero < 200) {
-          Array[DireccionTransporte](
-            DireccionTransporte(Tren("A"), CDirs.A_000),
-            DireccionTransporte(Colectivo(25), CDirs.A_000))
+    case Direccion("Calle BC", altura, _) =>
+      if (altura >= 0 && altura < 100) None
+      else if (altura >= 100 && altura < 300) Some(List(
+        (Colectivo(135), CDirs.BC_200)))
+      else if (altura >= 300 && altura < 500) None
+      else if (altura >= 500 && altura < 1000) None
+      else None
 
-        } else if (direccion.numero >= 200 && direccion.numero < 400) {
-          Array[DireccionTransporte](
-            DireccionTransporte(Colectivo(25), CDirs.A_200))
+    case Direccion("Calle C", altura, _) =>
+      if (altura >= 0 && altura < 100) Some(List(
+        (Tren("A"), CDirs.C_000)))
+      else if (altura >= 100 && altura < 300) Some(List(
+        (Colectivo(135), CDirs.C_200)))
+      else if (altura >= 300 && altura < 500) None
+      else if (altura >= 500 && altura < 1000) Some(List(
+        (Colectivo(135), CDirs.C_700)))
+      else None
 
-        } else if (direccion.numero >= 700 && direccion.numero < 1000) {
-          Array[DireccionTransporte](
-            DireccionTransporte(Colectivo(107), CDirs.A_700),
-            DireccionTransporte(Colectivo(25), CDirs.A_700))
-
-        } else {
-          new Array[DireccionTransporte](0)
-        }
-      }
-      case "Calle B" => {
-        if (direccion.numero >= 0 && direccion.numero < 200) {
-          Array[DireccionTransporte](
-            DireccionTransporte(Tren("A"), CDirs.B_000),
-            DireccionTransporte(Subte("A"), CDirs.B_000))
-
-        } else if (direccion.numero >= 400 && direccion.numero < 700) {
-          Array[DireccionTransporte](
-            DireccionTransporte(Colectivo(107), CDirs.B_400),
-            DireccionTransporte(Colectivo(135), CDirs.B_400),
-            DireccionTransporte(Subte("B"), CDirs.B_400))
-
-        } else {
-          new Array[DireccionTransporte](0)
-        }
-      }
-      case "Calle CB" => {
-        Array[DireccionTransporte](
-          DireccionTransporte(Colectivo(135), CDirs.BC_200))
-      }
-
-      case "Calle C" => {
-        if (direccion.numero >= 0 && direccion.numero < 200) {
-          Array[DireccionTransporte](
-            DireccionTransporte(Tren("A"), CDirs.C_000))
-
-        } else if (direccion.numero >= 200 && direccion.numero < 400) {
-          Array[DireccionTransporte](
-            DireccionTransporte(Colectivo(135), CDirs.C_200))
-        } else if (direccion.numero >= 700 && direccion.numero < 1000) {
-          Array[DireccionTransporte](
-            DireccionTransporte(Colectivo(135), CDirs.C_700))
-        } else {
-          new Array[DireccionTransporte](0)
-        }
-      }
-    }
+    case _ => None
   }
 
-  override def combinan(a: Transporte, b: Transporte): (Boolean, Direccion) = {
+  override def combinan(a: Transporte, b: Transporte): (Boolean, Option[Direccion]) = (a, b) match {
+    case (Colectivo(25), Tren("A")) => (true, Some(CDirs.A_000))
+    case (Tren("A"), Colectivo(25)) => (true, Some(CDirs.A_000))
 
-    var direccion: Direccion = null
+    case (Colectivo(25), Colectivo(107)) => (true, Some(CDirs.A_700))
+    case (Colectivo(107), Colectivo(25)) => (true, Some(CDirs.A_700))
 
-    direccion = combinaciones.get(a).get(b)
-    if (direccion == null ) direccion = combinaciones.get(b).get(a)
-    
-    (direccion != null, direccion)
+    case (Tren("A"), Subte("B")) => (true, Some(CDirs.B_000))
+    case (Subte("B"), Tren("A")) => (true, Some(CDirs.B_000))
+
+    case (Colectivo(107), Subte("B")) => (true, Some(CDirs.B_400))
+    case (Subte("B"), Colectivo(107)) => (true, Some(CDirs.B_400))
+    case (Colectivo(135), Subte("B")) => (true, Some(CDirs.B_400))
+    case (Subte("B"), Colectivo(135)) => (true, Some(CDirs.B_400))
+    case (Colectivo(107), Colectivo(135)) => (true, Some(CDirs.B_400))
+    case (Colectivo(135), Colectivo(107)) => (true, Some(CDirs.B_400))
+
+    case (_, _) => (false, None)
   }
 
   override def getDistanciaEntre(origen: Direccion, destino: Direccion, transporte: Transporte): Float = {
-    return 0
+    0
   }
+
+  override def getDistanciaEntre(origen: Direccion, destino: Direccion): Float =
+    Math.abs(origen.altura - destino.altura) + getDistanciaHorizontalAPie(origen, destino)
+
+  def getDistanciaHorizontalAPie(origen: Direccion, destino: Direccion): Float =
+    (origen, destino) match {
+      case (Direccion("Calle A", _, _), Direccion("Calle B", _, _)) => 100
+      case (Direccion("Calle A", _, _), Direccion("Calle BC", _, _)) => 50
+      case (Direccion("Calle A", _, _), Direccion("Calle C", _, _)) => 200
+
+      case (Direccion("Calle B", _, _), Direccion("Calle A", _, _)) => getDistanciaHorizontalAPie(destino, origen)
+      case (Direccion("Calle B", _, _), Direccion("Calle BC", _, _)) => 50
+      case (Direccion("Calle B", _, _), Direccion("Calle C", _, _)) => 100
+
+      case (Direccion("Calle BC", _, _), Direccion("Calle A", _, _)) => getDistanciaHorizontalAPie(destino, origen)
+      case (Direccion("Calle BC", _, _), Direccion("Calle B", _, _)) => getDistanciaHorizontalAPie(destino, origen)
+      case (Direccion("Calle BC", _, _), Direccion("Calle C", _, _)) => 50
+
+      case (Direccion("Calle C", _, _), Direccion("Calle A", _, _)) => getDistanciaHorizontalAPie(destino, origen)
+      case (Direccion("Calle C", _, _), Direccion("Calle B", _, _)) => getDistanciaHorizontalAPie(destino, origen)
+      case (Direccion("Calle C", _, _), Direccion("Calle C", _, _)) => getDistanciaHorizontalAPie(destino, origen)
+      case (_, _) => 0
+    }
 
 }

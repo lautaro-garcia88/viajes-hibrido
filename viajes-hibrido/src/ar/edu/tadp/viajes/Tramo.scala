@@ -1,5 +1,6 @@
 package ar.edu.tadp.viajes
 
-import ar.edu.tadp.viajes.transporte.Transporte
+import ar.edu.tadp.viajes.transporte.TipoVehiculo
+import ar.edu.tadp.viajes.Direccion
 
-class Tramo(var transporte: Transporte, var origen: Direccion, var destino: Direccion)
+case class Tramo (vehiculo: TipoVehiculo,origen: Direccion, destino: Direccion)

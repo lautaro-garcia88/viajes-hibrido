@@ -1,7 +1,5 @@
 package ar.edu.tadp.viajes.transporte
 
-abstract class Transporte
+import ar.edu.tadp.viajes.Direccion
 
-case class Colectivo(linea: Int) extends Transporte
-case class Subte(linea: String) extends Transporte
-case class Tren(linea: String) extends Transporte
+case class Transporte(vehiculo: TipoVehiculo, recorrido: List[Direccion])

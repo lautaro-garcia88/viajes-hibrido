@@ -1,8 +1,8 @@
 package ar.edu.tadp.viajes
 
-class Viaje(tramos: List[Tramo], origen: Direccion, destino: Direccion) {
+class Viaje(recorrido: Recorrido, origen: Direccion, destino: Direccion) {
   
-	def getTramos : List[Tramo] = this.tramos
+	def getRecorrido = recorrido
 	
 	def calcularPrecio() : Float = {
 	  0

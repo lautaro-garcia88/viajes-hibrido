@@ -7,37 +7,31 @@ import ar.edu.tadp.viajes.modulo._
 
 class ViajeBuilder(modulo: IModuloExterno) {
 
-  //criterio: (List[List[Tramo]]=> List[Tramo]
-  def buildViaje(origen: Direccion, destino: Direccion): Option[Viaje] = {
+  def getPosibleRecorridos(origen: Direccion, destino: Direccion): List[Recorrido] = {
+    val listaCercanos = this.modulo.getTransportesCercanos(origen)
 
-    val recorridos = (for {
-      (t, parada) <- this.modulo.getTransportesCercanos(origen)
-    } yield {
-      getRecorridos(t, parada, destino).get
-    }) flatten
+    listaCercanos map {
+      case (transOrg, paradaOrg) =>
+        if (llegaTransporteHasta(transOrg, destino)) {
+          List(Recorrido(List(Tramo(transOrg, paradaOrg, destino))))
+        } else {
+          this.modulo.getTransportesCercanos(destino) map {
+            case (transDest, paradaDest) =>
+              this.modulo.combinan(transDest, transOrg) match {
 
-    recorridos match {
-      case _ :: _ => Some(new Viaje(recorridos(0), origen, destino))
-      case Nil => None
-    }
+                case (true, Some(combinacionDir)) if (paradaOrg != combinacionDir) => Some(Recorrido(List(
+                  Tramo(transOrg, paradaOrg, combinacionDir),
+                  Tramo(transDest, combinacionDir, destino))))
+
+                case (_, _) => None
+              }
+          } flatten
+        }
+    } flatten
   }
 
-  private def getRecorridos(transOrg: Transporte, org: Direccion, dest: Direccion): Option[List[List[Tramo]]] = {
-    if (llegaTransporteHasta(transOrg, dest)) {
-      Some(List(List(Tramo(transOrg, org, dest))))
-    } else {
-      val recorridos = for {
-        (t, parada) <- this.modulo.getTransportesCercanos(dest)
-        if (this.modulo.combinan(t, transOrg)._1)
-      } yield {
-        val recorrido = getRecorridos(t, parada, dest) match {
-          case Some(List(list @ _ :: _)) => list
-          case None => Nil
-        }
-        Tramo(transOrg, parada, dest) :: recorrido
-      }
-      Some(recorridos)
-    }
+  def cumpleCriterio(recorrido: Recorrido): Boolean = {
+    true
   }
 
   def llegaTransporteHasta(transporte: Transporte, dest: Direccion): Boolean = {

@@ -23,14 +23,14 @@ object ModuloExterno extends IModuloExterno {
 
     case Direccion("Calle B", altura, _) =>
       if (altura >= 0 && altura < 100) List(
-        (Tren("A"), CDirs.A_000),
-        (Subte("B"), CDirs.A_000))
+        (Tren("A"), CDirs.B_000),
+        (Subte("B"), CDirs.B_000))
       else if (altura >= 100 && altura < 300) List.empty
       else if (altura >= 300 && altura < 500) List(
-        (Colectivo("135"), CDirs.A_400),
-        (Colectivo("107"), CDirs.A_400),
-        (Subte("B"), CDirs.A_400),
-        (Colectivo("53"), CDirs.A_400))
+        (Colectivo("135"), CDirs.B_400),
+        (Colectivo("107"), CDirs.B_400),
+        (Subte("B"), CDirs.B_400),
+        (Colectivo("53"), CDirs.B_400))
       else if (altura >= 500 && altura < 1000) List.empty
       else List.empty
 

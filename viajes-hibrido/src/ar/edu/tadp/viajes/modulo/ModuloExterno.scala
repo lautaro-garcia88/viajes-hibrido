@@ -74,6 +74,8 @@ object ModuloExterno extends IModuloExterno {
       case (Subte("B"), Colectivo("135")) => (true, Some(CDirs.B_400))
       case (Colectivo("107"), Colectivo("135")) => (true, Some(CDirs.B_400))
       case (Colectivo("135"), Colectivo("107")) => (true, Some(CDirs.B_400))
+      case (Colectivo("53"), Colectivo("135")) => (true, Some(CDirs.B_400))
+      case (Colectivo("135"), Colectivo("53")) => (true, Some(CDirs.B_400))
 
       case (_, _) => (false, None)
     }
@@ -123,5 +125,29 @@ object ModuloExterno extends IModuloExterno {
     }
 
   def getDistanciaVerticalAPie(origen: Direccion, destino: Direccion): Float = Math.abs(origen.altura - destino.altura)
+
+  def getEstaciones (t: Transporte) : List[Direccion] = {
+    t match {
+      case Colectivo("25") => List(
+        CDirs.A_000, CDirs.A_200, CDirs.A_700)
+      case Colectivo("107") => List(
+        CDirs.A_700, CDirs.B_400)
+      case Colectivo("53") => List(
+        CDirs.A_200, CDirs.B_400)
+      case Colectivo("135") => List(
+        CDirs.B_400, CDirs.BC_200, CDirs.C_200, CDirs.C_700)
+      case Tren("A") => List(
+        CDirs.A_000, CDirs.B_000, CDirs.C_000)
+      case Subte("B") => List(
+        CDirs.B_400, CDirs.B_000)
+    }
+  }
+  
+  def getEstacionesIntermedias(t:Transporte, origen: Direccion, destino: Direccion) : List[Direccion] = {
+    this.getEstaciones(t) match {
+      case _ :: origen :: mid :: destino :: _ => List(origen,mid,destino)
+      case _ => Nil
+    } 
+  }
 
 }

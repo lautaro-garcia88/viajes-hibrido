@@ -60,7 +60,7 @@ class ViajeBuilderTest {
           Tramo(Colectivo("135"), CDirs.B_400, CDirs.C_700)
      ), recorridos(0).getTramos)
   }
-  /*
+  
   
   @Test
   def armarViaje4 {
@@ -71,9 +71,8 @@ class ViajeBuilderTest {
 
     Assert.assertEquals(
       List(
+          Tramo(Colectivo("53"), CDirs.A_200, CDirs.B_400),
           Tramo(Colectivo("135"), CDirs.B_400, CDirs.C_700)
      ), recorridos(0).getTramos)
   }
-  */
-  */
 }

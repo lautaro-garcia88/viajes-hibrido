@@ -8,9 +8,8 @@ import ar.edu.tadp.viajes.modulo._
 class ViajeBuilder(modulo: IModuloExterno) {
 
   def getPosibleRecorridos(origen: Direccion, destino: Direccion): List[Recorrido] = {
-    val listaCercanos = this.modulo.getTransportesCercanos(origen)
 
-    listaCercanos map {
+    this.modulo.getTransportesCercanos(origen) map {
       case (transOrg, paradaOrg) =>
         if (llegaTransporteHasta(transOrg, destino)) {
           List(Recorrido(List(Tramo(transOrg, paradaOrg, destino))))

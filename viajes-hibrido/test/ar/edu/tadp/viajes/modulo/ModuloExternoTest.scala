@@ -52,11 +52,24 @@ class ModuloExternoTest {
 
   @Test
   def distanciasTransporte {
-	  var distancia = ModuloExterno.getDistanciaEntre(CDirs.A_000, CDirs.A_700,Colectivo("25"))
-	  Assert.assertEquals(700, distancia, 0.1f)
-	  
-	  distancia = ModuloExterno.getDistanciaEntre(CDirs.A_000, CDirs.C_000,Tren("A") )
-	  Assert.assertEquals(200, distancia, 0.1f)
+    var distancia = ModuloExterno.getDistanciaEntre(CDirs.A_000, CDirs.A_700, Colectivo("25"))
+    Assert.assertEquals(700, distancia, 0.1f)
+
+    distancia = ModuloExterno.getDistanciaEntre(CDirs.A_000, CDirs.C_000, Tren("A"))
+    Assert.assertEquals(200, distancia, 0.1f)
+  }
+
+  @Test
+  def estacionesIntermedias {
+    var estaciones = ModuloExterno.getEstacionesIntermedias(Colectivo("135"), CDirs.BC_200, CDirs.C_700)
+    Assert.assertEquals(List(CDirs.BC_200, CDirs.C_200, CDirs.C_700), estaciones)
+
+    
+    estaciones = ModuloExterno.getEstacionesIntermedias(Colectivo("25"), CDirs.BC_200, CDirs.C_700)
+    Assert.assertEquals(List(), estaciones)
+
+    estaciones = ModuloExterno.getEstacionesIntermedias(Colectivo("25"), CDirs.A_000, CDirs.A_700)
+    Assert.assertEquals(List(CDirs.A_000, CDirs.A_200, CDirs.A_700), estaciones)
   }
 
 }

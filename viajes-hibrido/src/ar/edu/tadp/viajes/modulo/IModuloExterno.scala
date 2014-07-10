@@ -9,5 +9,5 @@ trait IModuloExterno {
   def combinan(a: Transporte, b: Transporte): (Boolean, Option[Direccion])
   def getDistanciaEntre(origen: Direccion, destino: Direccion, transporte: Transporte): Float
   def getDistanciaEntre(origen: Direccion, destino: Direccion): Float
-
+  def getEstacionesIntermedias(t: Transporte, origen:Direccion, destino:Direccion ) : List[Direccion]
 }

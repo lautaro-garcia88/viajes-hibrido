@@ -144,10 +144,25 @@ object ModuloExterno extends IModuloExterno {
   }
   
   def getEstacionesIntermedias(t:Transporte, origen: Direccion, destino: Direccion) : List[Direccion] = {
-    this.getEstaciones(t) match {
-      case _ :: origen :: mid :: destino :: _ => List(origen,mid,destino)
-      case _ => Nil
-    } 
+    var estaciones = this.getEstaciones(t)
+    var origenPos = estaciones.indexOf(origen)
+    
+    if ( origenPos >= 0 ){
+      estaciones = estaciones.drop(origenPos)
+    } else {
+      return Nil
+    }
+    estaciones = estaciones.reverse
+    
+    var destinoPos = estaciones.indexOf(destino)
+    
+    if ( destinoPos >= 0 ){
+      estaciones = estaciones.drop(destinoPos)
+    } else {
+      return Nil
+    }
+    
+    estaciones.reverse
   }
 
 }

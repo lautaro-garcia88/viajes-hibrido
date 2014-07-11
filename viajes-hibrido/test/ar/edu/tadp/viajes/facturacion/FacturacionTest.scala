@@ -20,16 +20,17 @@ class FacturacionTest {
       Tramo(Subte("B"), CDirs.B_000, CDirs.B_400))
 
     val costoSinDescuento = this.facturacion.calcularCostoTotal(tramos)
-    Assert.assertEquals(6.5f, costoSinDescuento,0.1f)
-    
-    var costoConDescuento = this.facturacion.calcularCostoTotal(tramos,Tarjeta.Discapacitado)
-    Assert.assertEquals(0.0f, costoConDescuento,0.1f)
-    
-    costoConDescuento = this.facturacion.calcularCostoTotal(tramos,Tarjeta.Turismo)
-    Assert.assertEquals(5.85f, costoConDescuento,0.1f)
-    
-    costoConDescuento = this.facturacion.calcularCostoTotal(tramos,Tarjeta.YendoAlTrabajo)
-    Assert.assertEquals(6.5f, costoConDescuento,0.1f)
+    Assert.assertEquals(6.5f, costoSinDescuento, 0.1f)
+
+    var costoConDescuento = this.facturacion.calcularCostoTotal(tramos, Tarjeta.Discapacitado _)
+    Assert.assertEquals(0.0f, costoConDescuento, 0.1f)
+
+    costoConDescuento = this.facturacion.calcularCostoTotal(tramos, Tarjeta.Turismo _)
+    Assert.assertEquals(5.85f, costoConDescuento, 0.1f)
+
+    costoConDescuento = this.facturacion.calcularCostoTotal(tramos, Tarjeta.YendoAlTrabajo _)
+    Assert.assertEquals(6.5f, costoConDescuento, 0.1f)
   }
 
 }
+

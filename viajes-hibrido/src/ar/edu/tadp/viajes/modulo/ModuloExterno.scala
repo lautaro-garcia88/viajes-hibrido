@@ -93,8 +93,8 @@ object ModuloExterno extends IModuloExterno {
       case (Direccion("Calle B", 400, _), Direccion("Calle BC", 200, _), Colectivo("135")) => 50
       case (Direccion("Calle BC", 200, _), Direccion("Calle B", 400, _), Colectivo("135")) => getDistanciaEntre(destino, origen, transporte)
 
-      case (Direccion("Calle BC", 200, _), Direccion("Calle C", 400, _), Colectivo("135")) => 25
-      case (Direccion("Calle C", 400, _), Direccion("Calle BC", 200, _), Colectivo("135")) => getDistanciaEntre(destino, origen, transporte)
+      case (Direccion("Calle BC", 200, _), Direccion("Calle C", 200, _), Colectivo("135")) => 25
+      case (Direccion("Calle C", 200, _), Direccion("Calle BC", 200, _), Colectivo("135")) => getDistanciaEntre(destino, origen, transporte)
 
       case (dirA, dirB, Tren("A")) if !(dirA.calle equals dirB.calle) => getDistanciaHorizontalAPie(dirA, dirB)
 
@@ -120,13 +120,13 @@ object ModuloExterno extends IModuloExterno {
 
       case (Direccion("Calle C", _, _), Direccion("Calle A", _, _)) => getDistanciaHorizontalAPie(destino, origen)
       case (Direccion("Calle C", _, _), Direccion("Calle B", _, _)) => getDistanciaHorizontalAPie(destino, origen)
-      case (Direccion("Calle C", _, _), Direccion("Calle C", _, _)) => getDistanciaHorizontalAPie(destino, origen)
+      case (Direccion("Calle C", _, _), Direccion("Calle BC", _, _)) => getDistanciaHorizontalAPie(destino, origen)
       case (_, _) => 0
     }
 
   def getDistanciaVerticalAPie(origen: Direccion, destino: Direccion): Float = Math.abs(origen.altura - destino.altura)
 
-  def getEstaciones (t: Transporte) : List[Direccion] = {
+  def getEstaciones(t: Transporte): List[Direccion] = {
     t match {
       case Colectivo("25") => List(
         CDirs.A_000, CDirs.A_200, CDirs.A_700)
@@ -137,31 +137,32 @@ object ModuloExterno extends IModuloExterno {
       case Colectivo("135") => List(
         CDirs.B_400, CDirs.BC_200, CDirs.C_200, CDirs.C_700)
       case Tren("A") => List(
-        CDirs.A_000, CDirs.B_000, CDirs.C_000)
+        CDirs.A_000, CDirs.B_000, CDirs.C_000, CDirs.B_000, CDirs.A_000)
       case Subte("B") => List(
-        CDirs.B_400, CDirs.B_000)
+        CDirs.B_400, CDirs.B_000, CDirs.B_400)
     }
   }
-  
-  def getEstacionesIntermedias(t:Transporte, origen: Direccion, destino: Direccion) : List[Direccion] = {
+
+  def getEstacionesIntermedias(t: Transporte, origen: Direccion, destino: Direccion): List[Direccion] = {
     var estaciones = this.getEstaciones(t)
     var origenPos = estaciones.indexOf(origen)
-    
-    if ( origenPos >= 0 ){
+
+    if (origenPos >= 0) {
       estaciones = estaciones.drop(origenPos)
     } else {
       return Nil
     }
+
+    var destinoPos = estaciones.size - 1 - estaciones.indexOf(destino)
+
     estaciones = estaciones.reverse
-    
-    var destinoPos = estaciones.indexOf(destino)
-    
-    if ( destinoPos >= 0 ){
+
+    if (destinoPos >= 0) {
       estaciones = estaciones.drop(destinoPos)
     } else {
       return Nil
     }
-    
+
     estaciones.reverse
   }
 

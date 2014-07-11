@@ -8,7 +8,7 @@ import ar.edu.tadp.viajes.transporte._
 
 class ViajeBuilderTest {
 
-  val builder = new ViajeBuilder(ModuloExterno)
+  val builder = new ViajeBuilder
 
   @Test
   def llegaTransporteHasta {

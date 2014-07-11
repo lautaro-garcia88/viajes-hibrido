@@ -5,10 +5,22 @@ import util.control.Breaks._
 import ar.edu.tadp.viajes.transporte._
 import ar.edu.tadp.viajes.modulo._
 
-class ViajeBuilder(modulo: IModuloExterno) {
+class ViajeBuilder extends ModuloExternoDependency {
 
+  private type criterioRecorrido = List[Recorrido] => Recorrido
+  
+  def armarViaje(origen: Direccion, destino: Direccion) = {
+    val recorrido = getPosibleRecorridos(origen,destino)(0)
+    new Viaje(recorrido,origen,destino)
+  }
+  
+  def armarViaje(origen: Direccion, destino: Direccion,fCriterio: criterioRecorrido) = {
+    val recorrido = fCriterio(getPosibleRecorridos(origen,destino))
+    new Viaje(recorrido,origen,destino)
+  }
+  
   def getPosibleRecorridos(origen: Direccion, destino: Direccion): List[Recorrido] = {
-
+    
     this.modulo.getTransportesCercanos(origen) map {
       case (transOrg, paradaOrg) =>
         if (llegaTransporteHasta(transOrg, destino)) {
@@ -27,10 +39,6 @@ class ViajeBuilder(modulo: IModuloExterno) {
           } flatten
         }
     } flatten
-  }
-
-  def cumpleCriterio(recorrido: Recorrido): Boolean = {
-    true
   }
 
   def llegaTransporteHasta(transporte: Transporte, dest: Direccion): Boolean = {

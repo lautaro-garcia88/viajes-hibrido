@@ -16,8 +16,8 @@ class FacturacionTest {
   def facturacion1 {
 
     val tramos = List(
-      Tramo(Tren("A"), CDirs.A_000, CDirs.B_000),
-      Tramo(Subte("B"), CDirs.B_000, CDirs.B_400))
+      Tramo(Tren("A",""), CDirs.A_000, CDirs.B_000),
+      Tramo(Subte("B",""), CDirs.B_000, CDirs.B_400))
 
     val costoSinDescuento = this.facturacion.calcularCostoTotal(tramos)
     Assert.assertEquals(6.5f, costoSinDescuento, 0.1f)

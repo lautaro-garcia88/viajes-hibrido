@@ -11,12 +11,12 @@ object CalculaCosto extends ICalculador with ModuloExternoDependency {
     tramos.foldLeft((0.0f, 0)) {
       case ((amount, pos), tramo) =>
         val agregado = tramo match {
-          case Tramo(Subte(_), _, _) if (pos > 0) => tramos(pos - 1).transporte match {
-            case Subte(_) => 0.0f
+          case Tramo(Subte(_,_), _, _) if (pos > 0) => tramos(pos - 1).transporte match {
+            case Subte(_,_) => 0.0f
             case _ => 4.5f
           }
-          case Tramo(Subte(_), _, _) => 4.5f
-          case Tramo(tren @ Tren(_), origen, destino) =>
+          case Tramo(Subte(_,_), _, _) => 4.5f
+          case Tramo(tren @ Tren(_,_), origen, destino) =>
             val count = this.modulo.getEstacionesIntermedias(tren, origen, destino).size
             if (count <= 5)
               2.0f
@@ -24,7 +24,7 @@ object CalculaCosto extends ICalculador with ModuloExternoDependency {
               3.5f
             else
               4.75f
-          case tr @ Tramo(Colectivo(_), _, _) =>
+          case tr @ Tramo(Colectivo(_,_), _, _) =>
             val distancia = getDistanciaTramo(tr)
             if (distancia < 3000)
               2.5f

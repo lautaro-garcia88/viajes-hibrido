@@ -1,22 +1,27 @@
 package ar.edu.tadp.viajes
 
 import util.control.Breaks._
-
 import ar.edu.tadp.viajes.transporte._
 import ar.edu.tadp.viajes.modulo._
+import ar.edu.tadp.viajes.facturacion._
 
 class ViajeBuilder extends ModuloExternoDependency {
 
   private type criterioRecorrido = List[Recorrido] => Recorrido
   
+  private var _facturacion : IFacturacion = Facturacion
+  
+  def facturacion = _facturacion
+  def facturacion(mod: IFacturacion) = _facturacion = mod
+  
   def armarViaje(origen: Direccion, destino: Direccion) = {
     val recorrido = getPosibleRecorridos(origen,destino)(0)
-    new Viaje(recorrido,origen,destino)
+    new Viaje(recorrido,origen,destino,this.facturacion.calcularCostoTotal(recorrido.getTramos))
   }
   
   def armarViaje(origen: Direccion, destino: Direccion,fCriterio: criterioRecorrido) = {
     val recorrido = fCriterio(getPosibleRecorridos(origen,destino))
-    new Viaje(recorrido,origen,destino)
+    new Viaje(recorrido,origen,destino,this.facturacion.calcularCostoTotal(recorrido.getTramos))
   }
   
   def getPosibleRecorridos(origen: Direccion, destino: Direccion): List[Recorrido] = {

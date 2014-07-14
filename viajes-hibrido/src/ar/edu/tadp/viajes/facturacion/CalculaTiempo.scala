@@ -20,9 +20,9 @@ object CalculaTiempo extends ICalculador with ModuloExternoDependency {
           tramo.transporte, tramo.origen, tramo.destino)
 
         val minutosAgregados = tramo.transporte match {
-          case Tren(_) => (estacionesIntermedias.size - 1) * 3
-          case Subte(_) => (estacionesIntermedias.size - 1) * 2
-          case colectivo @ Colectivo(_) =>
+          case Tren(_,_) => (estacionesIntermedias.size - 1) * 3
+          case Subte(_,_) => (estacionesIntermedias.size - 1) * 2
+          case colectivo @ Colectivo(_,_) =>
             estacionesIntermedias.foldLeft((0.0f, 0)) {
               case ((acumColectivo, pos), estacion) =>
                 var minColectivo = 0.0f
@@ -40,10 +40,10 @@ object CalculaTiempo extends ICalculador with ModuloExternoDependency {
 
   def calcularTiempoCombinaciones(tramos: List[Tramo]): Float = {
     tramos match {
-      case List(Tramo(Subte(_), _, _), Tramo(Subte(_), _, _)) => 4.0f
-      case List(Tramo(Subte(_), _, _), Tramo(Tren(_), _, _)) |
-        List(Tramo(Tren(_), _, _), Tramo(Subte(_), _, _)) => 5.0f
-      case List(Tramo(Tren(_), _, _), Tramo(Tren(_), _, _)) => 4.0f
+      case List(Tramo(Subte(_,_), _, _), Tramo(Subte(_,_), _, _)) => 4.0f
+      case List(Tramo(Subte(_,_), _, _), Tramo(Tren(_,_), _, _)) |
+        List(Tramo(Tren(_,_), _, _), Tramo(Subte(_,_), _, _)) => 5.0f
+      case List(Tramo(Tren(_,_), _, _), Tramo(Tren(_,_), _, _)) => 4.0f
       case _ => tramos.foldLeft((0.0f, 0)) {
         case ((acumCombinacion, pos), tramo) =>
 

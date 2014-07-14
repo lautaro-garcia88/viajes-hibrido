@@ -9,7 +9,7 @@ import ar.edu.tadp.viajes.Viaje
 
 object Facturacion extends IFacturacion {
 
-  var _calculaCosto: ICalculador = CalculaCosto
+  private var _calculaCosto: ICalculador = CalculaCosto
 
   def calculaCosto = _calculaCosto
   def calculaCosto(mod: ICalculador) = _calculaCosto = mod

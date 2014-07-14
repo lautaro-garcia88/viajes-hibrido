@@ -16,8 +16,8 @@ class CalculaCostoTest {
   def costoTrenSubte {
 
     val tramos = List(
-      Tramo(Tren("A"), CDirs.A_000, CDirs.B_000),
-      Tramo(Subte("B"), CDirs.B_000, CDirs.B_400))
+      Tramo(Tren("A",""), CDirs.A_000, CDirs.B_000),
+      Tramo(Subte("B",""), CDirs.B_000, CDirs.B_400))
 
     val costo = this.calculaCosto.calcular(tramos)
 
@@ -28,8 +28,8 @@ class CalculaCostoTest {
   def costoColectivoColectivo {
 
     val tramos = List(
-      Tramo(Colectivo("25"), CDirs.A_000, CDirs.A_700),
-      Tramo(Colectivo("107"), CDirs.A_700, CDirs.B_400))
+      Tramo(Colectivo("25",""), CDirs.A_000, CDirs.A_700),
+      Tramo(Colectivo("107",""), CDirs.A_700, CDirs.B_400))
 
     val costo = this.calculaCosto.calcular(tramos)
 

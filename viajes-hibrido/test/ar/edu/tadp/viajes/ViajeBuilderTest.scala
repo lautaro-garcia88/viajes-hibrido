@@ -12,9 +12,9 @@ class ViajeBuilderTest {
 
   @Test
   def llegaTransporteHasta {
-    Assert.assertFalse(builder.llegaTransporteHasta(Tren("A"), CDirs.A_700))
-    Assert.assertTrue(builder.llegaTransporteHasta(Tren("A"), CDirs.A_000))
-    Assert.assertTrue(builder.llegaTransporteHasta(Colectivo("25"), CDirs.A_700))
+    Assert.assertFalse(builder.llegaTransporteHasta(Tren("A",""), CDirs.A_700))
+    Assert.assertTrue(builder.llegaTransporteHasta(Tren("A",""), CDirs.A_000))
+    Assert.assertTrue(builder.llegaTransporteHasta(Colectivo("25",""), CDirs.A_700))
   }
 
   @Test
@@ -25,7 +25,7 @@ class ViajeBuilderTest {
     Assert.assertEquals(1, recorridos.size)
 
     Assert.assertEquals(
-      List(Tramo(Colectivo("25"), CDirs.A_000, CDirs.A_700)), recorridos(0).getTramos)
+      List(Tramo(Colectivo("25",""), CDirs.A_000, CDirs.A_700)), recorridos(0).getTramos)
   }
   
   @Test
@@ -37,13 +37,13 @@ class ViajeBuilderTest {
 
     Assert.assertEquals(
       List(
-          Tramo(Colectivo("25"), CDirs.A_200, CDirs.A_700),
-          Tramo(Colectivo("107"), CDirs.A_700, CDirs.B_400)
+          Tramo(Colectivo("25",""), CDirs.A_200, CDirs.A_700),
+          Tramo(Colectivo("107",""), CDirs.A_700, CDirs.B_400)
      ), recorridos(0).getTramos)
      
      Assert.assertEquals(
       List(
-          Tramo(Colectivo("53"), CDirs.A_200, CDirs.B_400)
+          Tramo(Colectivo("53",""), CDirs.A_200, CDirs.B_400)
       ), recorridos(1).getTramos)
   }
   
@@ -57,7 +57,7 @@ class ViajeBuilderTest {
 
     Assert.assertEquals(
       List(
-          Tramo(Colectivo("135"), CDirs.B_400, CDirs.C_700)
+          Tramo(Colectivo("135",""), CDirs.B_400, CDirs.C_700)
      ), recorridos(0).getTramos)
   }
   
@@ -71,8 +71,8 @@ class ViajeBuilderTest {
 
     Assert.assertEquals(
       List(
-          Tramo(Colectivo("53"), CDirs.A_200, CDirs.B_400),
-          Tramo(Colectivo("135"), CDirs.B_400, CDirs.C_700)
+          Tramo(Colectivo("53",""), CDirs.A_200, CDirs.B_400),
+          Tramo(Colectivo("135",""), CDirs.B_400, CDirs.C_700)
      ), recorridos(0).getTramos)
   }
 }

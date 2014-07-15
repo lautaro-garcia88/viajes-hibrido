@@ -1,4 +1,4 @@
-package ar.edu.tadp.viajes.esdatisticas
+package ar.edu.tadp.viajes.estadistica
 
 import org.junit.Before
 import org.junit.Test
@@ -8,7 +8,6 @@ import ar.edu.tadp.viajes.Tramo
 import ar.edu.tadp.viajes.transporte._
 import ar.edu.tadp.viajes.Viaje
 import ar.edu.tadp.viajes.modulo.CDirs
-import ar.edu.tadp.viajes.estadistica.SumarizadorViaje
 
 class EstadisticaTest {
 

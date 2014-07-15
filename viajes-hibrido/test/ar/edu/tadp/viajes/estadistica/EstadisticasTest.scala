@@ -1,4 +1,4 @@
-package ar.edu.tadp.viajes.esdatisticas
+package ar.edu.tadp.viajes.estadistica
 
 import org.junit.Before
 import org.junit.Test
